@@ -1,5 +1,7 @@
 # MedWMS — Wholesale Management System
 
+🌐 **Live Demo:** [Click here to view the project live](https://palak-2811.github.io/MedWMS/)
+
 ![MedWMS Dashboard](Screenshot%202026-03-31%20213519.png)
 
 MedWMS is a modern, highly interactive wholesale distribution management platform built to handle the end-to-end flow of pharmaceutical orders. It features a complete modular architecture with zero backend dependencies, utilizing the browser's local storage for data persistence and HTML5 Canvas for real-time visualizations.
