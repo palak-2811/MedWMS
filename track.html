@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Orders — MedWMS</title>
+  <meta name="description" content="Track wholesale medicine orders with animated status visualization and real-time progress." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <div class="brand-logo">💊</div>
+      <div class="brand-name">
+        MedWMS
+        <small>Wholesale Distribution</small>
+      </div>
+    </a>
+
+    <div class="sidebar-label">Modules</div>
+    <nav class="sidebar-nav">
+      <a href="index.html"  class="nav-item"><span class="ni-icon">🏠</span> Home</a>
+      <a href="admin.html"  class="nav-item"><span class="ni-icon">📊</span> Dashboard</a>
+      <a href="order.html"  class="nav-item"><span class="ni-icon">📋</span> New Order</a>
+      <a href="bill.html"   class="nav-item"><span class="ni-icon">🧾</span> Billing</a>
+      <a href="track.html"  class="nav-item"><span class="ni-icon">📦</span> Track Orders</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="role-tag">
+        <div class="role-dot"></div>
+        Tracking Module
+      </div>
+    </div>
+  </aside>
+
+  <!-- PAGE WRAP -->
+  <div class="page-wrap">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Track Orders</h1>
+        <p>Enter an Order ID to see current status and shipment progress</p>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-date"></span>
+        <button class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+        <a href="admin.html" class="btn btn-outline btn-sm">← Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content" id="trackSection">
+
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;" class="track-main-grid">
+
+        <!-- LEFT: Search + Result -->
+        <div>
+
+          <!-- Search Bar -->
+          <div class="panel mb-20 reveal">
+            <div class="panel-head">
+              <div class="panel-title"><span class="pt-icon">🔍</span> Search by Order ID</div>
+            </div>
+            <div class="panel-body">
+              <div class="flex gap-10" style="flex-wrap:wrap;">
+                <div class="search-input-wrap" style="flex:1;min-width:200px;">
+                  <span class="search-icon">📦</span>
+                  <input type="text" id="trackInput" class="form-control"
+                    placeholder="e.g. WMO-A1001"
+                    style="padding-left:34px;text-transform:uppercase;letter-spacing:0.5px;font-family:var(--font-mono);" />
+                </div>
+                <button id="trackSearchBtn" class="btn btn-primary btn-lg">Track Order</button>
+              </div>
+              <p style="font-size:0.77rem;color:var(--text-4);margin-top:8px;">
+                💡 Tip: Click any <strong>Order ID</strong> in the right panel to auto-search it.
+              </p>
+            </div>
+          </div>
+
+          <!-- Placeholder (default) -->
+          <div id="trackPlaceholder" class="panel reveal">
+            <div class="panel-body">
+              <div class="empty-state">
+                <div class="es-icon">📦</div>
+                <h3>Enter an Order ID to track</h3>
+                <p>The system will display order status, medicine items, and animated shipment progress.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Not found -->
+          <div id="trackNotFound" class="panel" style="display:none;">
+            <div class="panel-body">
+              <div class="empty-state">
+                <div class="es-icon">🔍</div>
+                <h3 style="color:var(--danger);">Order Not Found</h3>
+                <p>No order matches that ID. Please check and try again,<br/>or select one from the list on the right.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Result Card -->
+          <div id="trackResult" class="panel" style="display:none;">
+            <div class="panel-head">
+              <div class="panel-title"><span class="pt-icon">📋</span> Order Details</div>
+              <div id="trStatusBadge"></div>
+            </div>
+            <div class="panel-body">
+
+              <!-- Order meta -->
+              <div class="detail-grid mb-16">
+                <div class="detail-item">
+                  <div class="di-label">Order ID</div>
+                  <div class="di-value text-mono" id="trOrderId">—</div>
+                </div>
+                <div class="detail-item">
+                  <div class="di-label">Retailer / Pharmacy</div>
+                  <div class="di-value" id="trRetailer">—</div>
+                </div>
+                <div class="detail-item">
+                  <div class="di-label">Contact</div>
+                  <div class="di-value" id="trContact">—</div>
+                </div>
+                <div class="detail-item">
+                  <div class="di-label">Order Date</div>
+                  <div class="di-value" id="trDate">—</div>
+                </div>
+                <div class="detail-item">
+                  <div class="di-label">No. of Items</div>
+                  <div class="di-value" id="trItems">—</div>
+                </div>
+                <div class="detail-item">
+                  <div class="di-label">Total Amount</div>
+                  <div class="di-value text-green" id="trTotal">—</div>
+                </div>
+              </div>
+
+              <hr class="divider" />
+
+              <!-- CSS VISUAL TRACKER BAR -->
+              <div style="margin:20px 0 8px;">
+                <div style="font-family:var(--font-ui);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-3);margin-bottom:14px;">
+                  Shipment Progress
+                </div>
+
+                <div class="tracker-bar">
+                  <div class="tracker-progress" id="trackerProgress" style="width:0;"></div>
+
+                  <div class="tracker-step" id="tstep-placed">
+                    <div class="t-dot">📋</div>
+                    <div class="t-label">Order<br/>Placed</div>
+                  </div>
+
+                  <div class="tracker-step" id="tstep-packed">
+                    <div class="t-dot">📦</div>
+                    <div class="t-label">Packed at<br/>Warehouse</div>
+                  </div>
+
+                  <div class="tracker-step" id="tstep-dispatched">
+                    <div class="t-dot">🚚</div>
+                    <div class="t-label">Dispatched<br/>to Courier</div>
+                  </div>
+
+                  <div class="tracker-step" id="tstep-delivered">
+                    <div class="t-dot">✅</div>
+                    <div class="t-label">Delivered<br/>to Retailer</div>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="divider" />
+
+              <!-- CANVAS ANIMATED TRACKER -->
+              <div style="margin:16px 0 8px;">
+                <div style="font-family:var(--font-ui);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-3);margin-bottom:10px;">
+                  🚚 Delivery Progress Animation
+                </div>
+                <div class="canvas-tracker-wrap">
+                  <canvas id="trackerCanvas" style="width:100%;height:140px;"></canvas>
+                </div>
+              </div>
+
+              <hr class="divider" />
+
+              <!-- Medicine items breakdown -->
+              <div>
+                <div style="font-family:var(--font-ui);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-3);margin-bottom:10px;">
+                  Medicine Items in This Order
+                </div>
+                <div id="trItemsList" style="font-size:0.85rem;color:var(--text-2);">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <hr class="divider" />
+
+              <!-- Action buttons -->
+              <div class="flex gap-10 no-print">
+                <a id="viewInvoiceBtn" href="bill.html" class="btn btn-ghost btn-sm">🧾 View Invoice</a>
+                <a href="admin.html" class="btn btn-outline btn-sm">📊 Dashboard</a>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /left col -->
+
+        <!-- RIGHT: Recent Orders Reference Panel -->
+        <div style="position:sticky;top:78px;" class="reveal-left">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="pt-icon">📋</span> Recent Orders</div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table w-full">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Retailer</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentOrdersBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div style="padding:10px 14px;border-top:1px solid var(--border);">
+              <p style="font-size:0.73rem;color:var(--text-4);">
+                Click any Order ID to track it instantly.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /track-main-grid -->
+    </div><!-- /content -->
+  </div><!-- /page-wrap -->
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script src="tracker-canvas.js"></script>
+  <script src="animations.js"></script>
+  <script>
+    /* Update the View Invoice link dynamically */
+    document.addEventListener("DOMContentLoaded", () => {
+      const idEl  = document.getElementById("trOrderId");
+      const invEl = document.getElementById("viewInvoiceBtn");
+      if (!idEl || !invEl) return;
+      new MutationObserver(() => {
+        const id = idEl.textContent.trim();
+        if (id && id !== "—") invEl.href = "bill.html?id=" + id;
+      }).observe(idEl, { childList: true, subtree: true });
+    });
+
+    /* Responsive: collapse two-col to single col on small screens */
+    function adjustGrid() {
+      const grid = document.querySelector(".track-main-grid");
+      if (!grid) return;
+      grid.style.gridTemplateColumns = window.innerWidth < 900 ? "1fr" : "1fr 340px";
+    }
+    window.addEventListener("resize", adjustGrid);
+    adjustGrid();
+  </script>
+</body>
+</html>

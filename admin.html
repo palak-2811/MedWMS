@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — MedWMS</title>
+  <meta name="description" content="MedWMS Wholesaler Dashboard — Manage all retailer orders, view analytics, and update order statuses." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <div class="brand-logo">💊</div>
+      <div class="brand-name">
+        MedWMS
+        <small>Wholesale Distribution</small>
+      </div>
+    </a>
+
+    <div class="sidebar-label">Modules</div>
+    <nav class="sidebar-nav">
+      <a href="index.html"  class="nav-item"><span class="ni-icon">🏠</span> Home</a>
+      <a href="admin.html"  class="nav-item"><span class="ni-icon">📊</span> Dashboard</a>
+      <a href="order.html"  class="nav-item"><span class="ni-icon">📋</span> New Order</a>
+      <a href="bill.html"   class="nav-item"><span class="ni-icon">🧾</span> Billing</a>
+      <a href="track.html"  class="nav-item"><span class="ni-icon">📦</span> Track Orders</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="role-tag">
+        <div class="role-dot"></div>
+        Wholesaler Admin
+      </div>
+    </div>
+  </aside>
+
+  <!-- PAGE WRAP -->
+  <div class="page-wrap">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Wholesaler Dashboard</h1>
+        <p>Manage all incoming retailer orders and update statuses</p>
+      </div>
+      <div class="topbar-right" style="text-align:right;">
+        <div style="font-size:13px; line-height:1.4; margin-bottom:6px;">
+          <strong>24BCE5268</strong><br>
+          <strong>Palak Malpani</strong>
+        </div>
+        <span class="topbar-date"></span>
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">🌙</button>
+        <a href="order.html" class="btn btn-primary btn-sm">+ New Order</a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- KPI STATS -->
+      <div class="stat-grid reveal-stagger">
+        <div class="stat-card reveal">
+          <div class="stat-icon-wrap ic-green">📦</div>
+          <div class="stat-info">
+            <div class="stat-num" id="statTotal">—</div>
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-sub">All time</div>
+          </div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-icon-wrap ic-amber">⏳</div>
+          <div class="stat-info">
+            <div class="stat-num" id="statPending">—</div>
+            <div class="stat-label">Pending Orders</div>
+            <div class="stat-sub">Placed + Packed</div>
+          </div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-icon-wrap ic-blue">✅</div>
+          <div class="stat-info">
+            <div class="stat-num" id="statDelivered">—</div>
+            <div class="stat-label">Delivered</div>
+            <div class="stat-sub">Completed orders</div>
+          </div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-icon-wrap ic-purple">💰</div>
+          <div class="stat-info">
+            <div class="stat-num" id="statRevenue" style="font-size:1.1rem;">—</div>
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-sub">All orders (incl. GST)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS CHARTS -->
+      <div class="chart-grid">
+        <div class="chart-card reveal">
+          <div class="chart-header">
+            <div class="chart-title"><span class="pt-icon" style="background:var(--purple-pale);">📊</span> Order Status Distribution</div>
+          </div>
+          <div class="chart-body">
+            <canvas id="doughnutChart" style="width:100%;height:240px;"></canvas>
+          </div>
+          <div class="chart-legend" id="doughnutLegend">
+            <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#f59e0b;"></div> Placed</div>
+            <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#3b82f6;"></div> Packed</div>
+            <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#8b5cf6;"></div> Dispatched</div>
+            <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#10b981;"></div> Delivered</div>
+          </div>
+        </div>
+        <div class="chart-card reveal">
+          <div class="chart-header">
+            <div class="chart-title"><span class="pt-icon" style="background:var(--info-pale);">📈</span> Revenue by Retailer (Top 5)</div>
+          </div>
+          <div class="chart-body">
+            <canvas id="barChart" style="width:100%;height:280px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS TABLE -->
+      <div class="panel reveal">
+        <div class="panel-head">
+          <div class="panel-title"><span class="pt-icon">📋</span> All Retailer Orders</div>
+          <div class="flex gap-10 no-print">
+            <a href="order.html" class="btn btn-primary btn-sm">+ New Order</a>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
+          <div class="filter-bar" style="margin-bottom:0;">
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="adminSearch" class="form-control"
+                placeholder="Search by Order ID or Retailer name…" />
+            </div>
+            <select id="adminFilter" class="form-control" style="width:auto;padding:9px 14px;">
+              <option value="All">All Statuses</option>
+              <option value="Placed">Placed</option>
+              <option value="Packed">Packed</option>
+              <option value="Dispatched">Dispatched</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-body-p0" style="overflow-x:auto;">
+          <table class="data-table w-full">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Retailer / Pharmacy</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersBody">
+              <tr class="empty-row"><td colspan="7">Loading orders…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STATUS GUIDE -->
+      <div class="panel mt-20 no-print reveal">
+        <div class="panel-head">
+          <div class="panel-title"><span class="pt-icon">📊</span> Order Status Guide</div>
+        </div>
+        <div class="panel-body">
+          <div class="flex gap-16" style="flex-wrap:wrap;">
+            <div class="flex items-center gap-8">
+              <span class="badge badge-placed">Placed</span>
+              <span style="font-size:0.83rem;color:var(--text-3);">Order received from retailer, awaiting processing</span>
+            </div>
+            <div class="flex items-center gap-8">
+              <span class="badge badge-packed">Packed</span>
+              <span style="font-size:0.83rem;color:var(--text-3);">Medicines picked and packed in warehouse</span>
+            </div>
+            <div class="flex items-center gap-8">
+              <span class="badge badge-dispatched">Dispatched</span>
+              <span style="font-size:0.83rem;color:var(--text-3);">Order handed to logistics / courier</span>
+            </div>
+            <div class="flex items-center gap-8">
+              <span class="badge badge-delivered">Delivered</span>
+              <span style="font-size:0.83rem;color:var(--text-3);">Successfully delivered to retailer</span>
+            </div>
+          </div>
+          <p style="font-size:0.78rem;color:var(--text-4);margin-top:12px;">
+            💡 <strong>To update a status:</strong> click the dropdown in the Status column. <strong>To reorder:</strong> drag and drop table rows.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /page-wrap -->
+
+  <!-- ORDER DETAIL MODAL -->
+  <div class="modal-overlay" id="orderModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Order Details</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="orderModalBody">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal-body" style="padding-top:0;border-top:1px solid var(--border);">
+        <div class="flex gap-10 justify-end">
+          <button class="btn btn-outline btn-sm" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Scripts: modular loading order -->
+  <script src="app.js"></script>
+  <script src="charts.js"></script>
+  <script src="animations.js"></script>
+  <script>
+    // Render charts after page init
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(renderCharts, 300);
+    });
+  </script>
+</body>
+</html>

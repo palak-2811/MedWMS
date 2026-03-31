@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedWMS — Wholesale Distribution Platform</title>
+  <meta name="description" content="Modern wholesale medicine distribution management for streamlined orders, invoicing, and real-time tracking.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="lnav">
+    <a href="index.html" class="lnav-logo">
+      <div class="llogo-icon">💊</div>
+      <div>
+        <span class="llogo-title">MedWMS</span>
+        <span class="llogo-sub">Wholesale Distribution</span>
+      </div>
+    </a>
+    <ul class="lnav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#modules">Modules</a></li>
+      <li><a href="#how">How it Works</a></li>
+    </ul>
+    <div class="lnav-cta">
+      <a href="login.html" class="lbtn-ghost">Sign In</a>
+      <a href="login.html" class="lbtn-primary">Get Started →</a>
+    </div>
+    <button class="lnav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="lhero">
+    <div class="lhero-badge"><span class="ldot"></span>Built for Pharmaceutical Wholesale Distribution</div>
+    <h1 class="lhero-h1">
+      Manage Your<br>
+      <span class="lgrad-text">Medicine Wholesale</span><br>
+      Distribution Smarter
+    </h1>
+    <p class="lhero-p">MedWMS gives your business a complete command centre — from retailer orders to GST invoices and real-time shipment tracking, all in one place.</p>
+    <div class="lhero-actions">
+      <a href="login.html" class="lbtn-hero">Enter Dashboard →</a>
+      <a href="#modules" class="lbtn-hero-ghost">Explore Modules</a>
+    </div>
+
+    <!-- Mock Dashboard Preview -->
+    <div class="lpreview-wrap">
+      <div class="lpreview-frame">
+        <div class="lpreview-bar">
+          <span class="lpd" style="background:#ff5f56"></span>
+          <span class="lpd" style="background:#ffbd2e"></span>
+          <span class="lpd" style="background:#27c93f"></span>
+          <span class="lpreview-url">MedWMS — Wholesaler Dashboard</span>
+        </div>
+        <div class="lpreview-inner">
+          <div class="lpreview-sidebar">
+            <div class="lps-logo"><div class="lps-li"></div><div class="lps-lt"></div></div>
+            <div class="lps-item active"><div class="lps-icon"></div><div class="lps-lbl"></div></div>
+            <div class="lps-item"><div class="lps-icon"></div><div class="lps-lbl" style="width:55px"></div></div>
+            <div class="lps-item"><div class="lps-icon"></div><div class="lps-lbl" style="width:50px"></div></div>
+            <div class="lps-item"><div class="lps-icon"></div><div class="lps-lbl" style="width:80px"></div></div>
+          </div>
+          <div class="lpreview-main">
+            <div class="lpm-top"><div class="lpm-heading"></div><div class="lpm-btn"></div></div>
+            <div class="lpm-stats">
+              <div class="lpm-stat"><div class="lpm-sn" style="background:rgba(16,185,129,.4)"></div><div class="lpm-sl"></div></div>
+              <div class="lpm-stat"><div class="lpm-sn" style="background:rgba(6,182,212,.35)"></div><div class="lpm-sl"></div></div>
+              <div class="lpm-stat"><div class="lpm-sn" style="background:rgba(139,92,246,.35)"></div><div class="lpm-sl"></div></div>
+              <div class="lpm-stat"><div class="lpm-sn" style="background:rgba(245,158,11,.35)"></div><div class="lpm-sl"></div></div>
+            </div>
+            <div class="lpm-charts">
+              <div class="lpm-chart">
+                <div class="lpm-ct"></div>
+                <div class="lpm-donut"></div>
+              </div>
+              <div class="lpm-chart">
+                <div class="lpm-ct"></div>
+                <div class="lpm-bars">
+                  <div class="lpm-bar" style="height:55%"></div>
+                  <div class="lpm-bar" style="height:80%"></div>
+                  <div class="lpm-bar" style="height:65%"></div>
+                  <div class="lpm-bar" style="height:95%"></div>
+                  <div class="lpm-bar" style="height:45%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lpreview-fade"></div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="lstats-bar lreveal">
+    <div class="lstat-item"><span class="lstat-num" data-count="500">0</span><span class="lstat-lbl">Orders Processed Daily</span></div>
+    <div class="lstat-item"><span class="lstat-num" data-count="99" data-suffix="%">0%</span><span class="lstat-lbl">GST Invoice Accuracy</span></div>
+    <div class="lstat-item"><span class="lstat-num" data-count="4">0</span><span class="lstat-lbl">Integrated Modules</span></div>
+    <div class="lstat-item"><span class="lstat-num" data-count="100" data-suffix="%">0%</span><span class="lstat-lbl">No Install Required</span></div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="lsection" id="features">
+    <span class="lsec-label lreveal">Platform Features</span>
+    <h2 class="lsec-h2 lreveal">Everything your wholesale business needs</h2>
+    <p class="lsec-p lreveal">An integrated platform purpose-built for pharmaceutical distributors to handle orders, billing, and deliveries with precision.</p>
+    <div class="lfeat-grid lstagger">
+      <div class="lfeat-card"><div class="lfeat-icon">📊</div><h3>Live Analytics Dashboard</h3><p>Real-time KPIs — total orders, pending, delivered, and revenue — visualised with animated charts.</p></div>
+      <div class="lfeat-card"><div class="lfeat-icon">🧾</div><h3>GST-Ready Invoicing</h3><p>Auto-compute subtotals, apply 18% GST, and produce professional print-ready invoices instantly.</p></div>
+      <div class="lfeat-card"><div class="lfeat-icon">📦</div><h3>Live Order Tracking</h3><p>Monitor every shipment from placement to delivery with a dynamic visual progress tracker.</p></div>
+      <div class="lfeat-card"><div class="lfeat-icon">✍️</div><h3>Digital Signature Capture</h3><p>Retailers sign directly on the order form. The signature is embedded on the generated invoice.</p></div>
+      <div class="lfeat-card"><div class="lfeat-icon">🌙</div><h3>Dark & Light Mode</h3><p>A premium interface that adapts to your preference — dark or light — and remembers your choice.</p></div>
+      <div class="lfeat-card"><div class="lfeat-icon">📱</div><h3>Fully Responsive</h3><p>Works beautifully on any screen. Sidebar collapses gracefully and all layouts adapt automatically.</p></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <div class="lhow-section" id="how">
+    <div class="lhow-inner">
+      <span class="lsec-label lreveal">Workflow</span>
+      <h2 class="lsec-h2 lreveal">How MedWMS works</h2>
+      <p class="lsec-p lreveal">A streamlined four-step process from retailer order to final delivery confirmation.</p>
+      <div class="lsteps lstagger">
+        <div class="lstep"><div class="lstep-num">1</div><h3>Retailer Places Order</h3><p>Medicine items, quantities, and a digital signature are submitted online.</p></div>
+        <div class="lstep"><div class="lstep-num">2</div><h3>Wholesaler Reviews</h3><p>Admin sees the order instantly on the dashboard and updates its status.</p></div>
+        <div class="lstep"><div class="lstep-num">3</div><h3>Invoice Generated</h3><p>A GST invoice is auto-created with a status watermark and retailer signature.</p></div>
+        <div class="lstep"><div class="lstep-num">4</div><h3>Order is Tracked</h3><p>Both parties track the shipment's live progress until marked Delivered.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULES -->
+  <section class="lsection" id="modules">
+    <span class="lsec-label lreveal">Platform Modules</span>
+    <h2 class="lsec-h2 lreveal">Four powerful modules, one system</h2>
+    <p class="lsec-p lreveal">Data flows seamlessly from order to invoice to tracker across all modules.</p>
+    <div class="lmod-grid lstagger">
+      <a href="admin.html" class="lmod-card"><div class="lmod-icon">📋</div><div class="lmod-info"><h3>Wholesaler Dashboard</h3><p>Order table, live KPIs, status management, and distribution charts.</p></div><span class="lmod-arr">→</span></a>
+      <a href="order.html" class="lmod-card"><div class="lmod-icon">✏️</div><div class="lmod-info"><h3>New Order Form</h3><p>Medicine items with auto-GST totals and digital signature capture.</p></div><span class="lmod-arr">→</span></a>
+      <a href="bill.html" class="lmod-card"><div class="lmod-icon">🧾</div><div class="lmod-info"><h3>Invoice & Billing</h3><p>GST-compliant, print-ready invoice with status watermark and signature.</p></div><span class="lmod-arr">→</span></a>
+      <a href="track.html" class="lmod-card"><div class="lmod-icon">🚚</div><div class="lmod-info"><h3>Order Tracking</h3><p>Search any order ID to see an animated delivery progress visualisation.</p></div><span class="lmod-arr">→</span></a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="lcta lreveal">
+    <div class="lcta-inner">
+      <h2>Ready to run your distribution smarter?</h2>
+      <p>Sign in and manage your first retailer order in under 2 minutes.</p>
+      <a href="login.html" class="lbtn-hero">Enter Platform →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="lfooter">
+    <div class="lfooter-logo"><span>Med</span>WMS &middot; Wholesale Management System</div>
+    <div class="lfooter-note">Built with HTML5 · CSS3 · Vanilla JavaScript</div>
+  </footer>
+
+  <script src="landing.js"></script>
+</body>
+</html>

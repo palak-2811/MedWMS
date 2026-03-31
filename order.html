@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Place Order — MedWMS</title>
+  <meta name="description" content="Place a new wholesale medicine order with live billing preview and digital signature." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <div class="brand-logo">💊</div>
+      <div class="brand-name">
+        MedWMS
+        <small>Wholesale Distribution</small>
+      </div>
+    </a>
+
+    <div class="sidebar-label">Modules</div>
+    <nav class="sidebar-nav">
+      <a href="index.html"  class="nav-item"><span class="ni-icon">🏠</span> Home</a>
+      <a href="admin.html"  class="nav-item"><span class="ni-icon">📊</span> Dashboard</a>
+      <a href="order.html"  class="nav-item"><span class="ni-icon">📋</span> New Order</a>
+      <a href="bill.html"   class="nav-item"><span class="ni-icon">🧾</span> Billing</a>
+      <a href="track.html"  class="nav-item"><span class="ni-icon">📦</span> Track Orders</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="role-tag">
+        <div class="role-dot"></div>
+        Retailer Portal
+      </div>
+    </div>
+  </aside>
+
+  <!-- PAGE WRAP -->
+  <div class="page-wrap">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Place New Order</h1>
+        <p>Fill in retailer details and add medicine line items</p>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-date"></span>
+        <button class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+        <a href="admin.html" class="btn btn-outline btn-sm">← Back to Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <form id="orderForm" novalidate>
+        <input type="hidden" id="hiddenOrderId" />
+
+        <!-- ORDER ID PREVIEW BAR -->
+        <div class="reveal" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div>
+            <div style="font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-4);margin-bottom:3px;">Auto-Generated Order ID</div>
+            <div id="previewOrderId" style="font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:var(--brand);letter-spacing:1px;"></div>
+          </div>
+          <div style="font-size:0.78rem;color:var(--text-4);">Status: <span style="color:var(--s-placed);font-weight:700;">Placed</span></div>
+        </div>
+
+        <!-- RETAILER INFO -->
+        <div class="panel mb-20 reveal">
+          <div class="panel-head">
+            <div class="panel-title"><span class="pt-icon">🏪</span> Retailer / Pharmacy Information</div>
+          </div>
+          <div class="panel-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="retailerName">Pharmacy / Retailer Name *</label>
+                <input type="text" id="retailerName" class="form-control"
+                  placeholder="e.g. MediPlus Pharmacy" autocomplete="off" />
+                <span class="err-msg" id="retailerName_err"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="retailerContact">Contact Number *</label>
+                <input type="tel" id="retailerContact" class="form-control"
+                  placeholder="10-digit mobile number" maxlength="10" />
+                <span class="err-msg" id="retailerContact_err"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEDICINE LINE ITEMS -->
+        <div class="panel mb-20 reveal">
+          <div class="panel-head">
+            <div class="panel-title"><span class="pt-icon">💊</span> Medicine Order Items</div>
+            <button type="button" id="addRowBtn" class="btn btn-ghost btn-sm">+ Add Row</button>
+          </div>
+          <div class="panel-body-p0">
+
+            <!-- GST Rate selector -->
+            <div style="padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <label class="form-label" for="gstRate" style="white-space:nowrap;margin:0;">GST Rate:</label>
+                <select id="gstRate" class="form-control" style="width:auto;padding:6px 10px;">
+                  <option value="5">5%</option>
+                  <option value="12">12%</option>
+                  <option value="18" selected>18%</option>
+                  <option value="28">28%</option>
+                </select>
+              </div>
+              <span style="font-size:0.78rem;color:var(--text-4);">GST is applied on subtotal at the selected rate.</span>
+            </div>
+
+            <div class="items-table-wrap" style="padding:0 20px 0;">
+              <table class="items-table w-full" style="margin-top:12px;">
+                <thead>
+                  <tr>
+                    <th style="width:36px;">#</th>
+                    <th>Medicine Name</th>
+                    <th style="width:100px;">Quantity</th>
+                    <th style="width:120px;">Unit Price (₹)</th>
+                    <th style="width:110px;text-align:right;">Amount (₹)</th>
+                    <th style="width:40px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="itemsBody">
+                  <!-- Rows injected by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Live billing summary -->
+            <div style="display:flex;justify-content:flex-end;padding:16px 20px;border-top:1px solid var(--border);gap:32px;flex-wrap:wrap;">
+              <div style="text-align:right;">
+                <div style="font-size:0.75rem;color:var(--text-4);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;">Subtotal</div>
+                <div id="sumSubtotal" style="font-family:var(--font-mono);font-weight:700;font-size:1rem;color:var(--text-2);">₹0.00</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:0.75rem;color:var(--text-4);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;">GST</div>
+                <div id="sumGst" style="font-family:var(--font-mono);font-weight:700;font-size:1rem;color:var(--text-2);">₹0.00</div>
+              </div>
+              <div style="text-align:right;background:var(--brand-pale);padding:8px 16px;border-radius:var(--radius-sm);">
+                <div style="font-size:0.75rem;color:var(--brand-dark);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;font-weight:700;">Total Payable</div>
+                <div id="sumTotal" style="font-family:var(--font-mono);font-weight:800;font-size:1.2rem;color:var(--brand-dark);">₹0.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIGNATURE PAD (Canvas) -->
+        <div class="panel mb-20 reveal">
+          <div class="panel-head">
+            <div class="panel-title"><span class="pt-icon">✍️</span> Digital Signature</div>
+            <button type="button" id="clearSignatureBtn" class="btn btn-outline btn-sm">🗑️ Clear</button>
+          </div>
+          <div class="panel-body">
+            <p style="font-size:0.82rem;color:var(--text-3);margin-bottom:12px;">
+              Draw your signature below to authorize this order. The signature will appear on the invoice.
+            </p>
+            <div class="signature-canvas-wrap">
+              <canvas id="signatureCanvas" style="width:100%;height:120px;"></canvas>
+              <div class="signature-placeholder">✍️ Draw signature here</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMIT BUTTONS -->
+        <div class="flex justify-end gap-10 reveal">
+          <button type="button" class="btn btn-outline"
+            onclick="document.getElementById('orderForm').reset();document.getElementById('itemsBody').innerHTML='';itemRowCount=0;addItemRow();addItemRow();addItemRow();recalcTotals();clearSignature();">
+            🔄 Reset Form
+          </button>
+          <button type="submit" class="btn btn-primary btn-lg">
+            ✅ Submit Order &amp; Generate Invoice
+          </button>
+        </div>
+
+      </form>
+    </div><!-- /content -->
+  </div><!-- /page-wrap -->
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script src="signature.js"></script>
+  <script src="animations.js"></script>
+</body>
+</html>
