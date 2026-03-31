@@ -1,6 +1,6 @@
 # MedWMS — Wholesale Management System
 
-![MedWMS Dashboard](https://via.placeholder.com/800x400.png?text=MedWMS+Dashboard)
+![MedWMS Dashboard]("E:\web prog\Screenshot 2026-03-31 213519.png")
 
 MedWMS is a modern, highly interactive wholesale distribution management platform built to handle the end-to-end flow of pharmaceutical orders. It features a complete modular architecture with zero backend dependencies, utilizing the browser's local storage for data persistence and HTML5 Canvas for real-time visualizations.
 
